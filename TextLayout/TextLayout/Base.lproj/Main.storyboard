@@ -26,7 +26,7 @@
             </objects>
             <point key="canvasLocation" x="-665" y="139"/>
         </scene>
-        <!--UIFont Properties-->
+        <!--Text Layout-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TextLayoutViewController" customModule="TextLayout" customModuleProvider="target" sceneMemberID="viewController">
@@ -165,7 +165,7 @@
                             <constraint firstItem="7AI-b1-Ns4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pwg-nM-8lg"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="UIFont Properties" id="fk4-wO-BEM"/>
+                    <navigationItem key="navigationItem" title="Text Layout" id="fk4-wO-BEM"/>
                     <connections>
                         <outlet property="tableView" destination="nlm-dB-gsX" id="Ifh-BS-SRs"/>
                         <outlet property="textLabel" destination="9xO-zV-jYM" id="pK4-9P-1DU"/>

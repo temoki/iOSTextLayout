@@ -8,6 +8,4 @@ iOS Text Layout Learning Project
 
 ## Screen Shot
 
-UIFont Properties
-
-<img src="https://github.com/temoki/iOSTextLayout/blob/master/ScreenShot/UIFontProperties.png" />
+<img src="https://github.com/temoki/iOSTextLayout/blob/master/ScreenShot.png" />
