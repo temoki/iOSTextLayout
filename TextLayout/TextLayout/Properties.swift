@@ -12,6 +12,8 @@ class Properties {
     
     static let shared = Properties()
     
+    // MARK:- For UILabel
+    
     static let textList = [
          "jKf"
         ,"Jump 跳ぶ Fly 飛ぶ"
@@ -41,8 +43,21 @@ class Properties {
         }
     }
     
+    
+    // MARK:- For UIFont
     var pointSize: CGFloat = 64
 
     var fontName: String = UIFont.systemFont(ofSize: 32).fontName
 
+    
+    // MARK:- For NSParagraphStype
+    
+    var lineSpacing: CGFloat?
+    
+    var lineHeightMultiple: CGFloat?
+    
+    var maximumLineHeight: CGFloat?
+
+    var minimumLineHeight: CGFloat?
+    
 }

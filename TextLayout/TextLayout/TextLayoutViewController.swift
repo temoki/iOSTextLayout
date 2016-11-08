@@ -37,8 +37,31 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK:- Private
     
     private func update() {
-        textLabel.text = Properties.shared.text
-        textLabel.font = UIFont(name: Properties.shared.fontName, size: Properties.shared.pointSize)
+        //textLabel.text = Properties.shared.text
+        //textLabel.font = UIFont(name: Properties.shared.fontName, size: Properties.shared.pointSize)
+        
+        let p = Properties.shared
+        
+        var attributes: [String: Any] = [:]
+        
+        let text = NSMutableAttributedString(string: p.text)
+        let range = NSRange(location: 0, length: text.length)
+
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        paragraph.lineHeightMultiple = p.lineHeightMultiple ?? NSParagraphStyle.default.lineHeightMultiple
+        paragraph.lineSpacing = p.lineSpacing ?? NSParagraphStyle.default.lineSpacing
+        paragraph.maximumLineHeight = p.maximumLineHeight ?? NSParagraphStyle.default.maximumLineHeight
+        paragraph.minimumLineHeight = p.minimumLineHeight ?? NSParagraphStyle.default.minimumLineHeight
+        attributes[NSParagraphStyleAttributeName] = paragraph
+        
+        if let font = UIFont(name: p.fontName, size: p.pointSize) {
+            attributes[NSFontAttributeName] = font
+        }
+
+        text.addAttributes(attributes, range: range)
+        textLabel.attributedText = text
+        
         tableView.reloadData()
     }
     
@@ -46,7 +69,7 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK:- UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -55,6 +78,8 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
             return "UILabel"
         case 1:
             return "UIFont"
+        case 2:
+            return "NSParagraphStyle"
         default:
             return nil
         }
@@ -66,6 +91,8 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
             return 2
         case 1:
             return 8
+        case 2:
+            return 4
         default:
             return 0
         }
@@ -111,8 +138,11 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.titleLabel.text = ".pointSize"
                 cell.titleLabel.textColor = UIColor.black
                 cell.value = Properties.shared.pointSize
-                cell.valueChangedHandler = { [weak self] (value) in
-                    Properties.shared.pointSize = value
+                cell.isEnabled = true
+                cell.enableSwitch.isHidden = true
+                cell.valueStepper.stepValue = 1
+                cell.valueChangedHandler = { [weak self] (cell, state) in
+                    Properties.shared.pointSize = cell.value
                     self?.update()
                 }
                 cell.selectionStyle = .none
@@ -121,7 +151,12 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: TitleDetailCell.identifier, for: indexPath) as! TitleDetailCell
                 cell.titleLabel.text = ".lineHeight"
-                cell.titleLabel.textColor = GuideLabel.colorLineHeight
+                switch textLabel.suitableLineHeight {
+                case .normal(_):
+                    cell.titleLabel.textColor = GuideLabel.colorLineHeight
+                default:
+                    cell.titleLabel.textColor = UIColor.black
+                }
                 cell.detailLabel.text = "\(font.lineHeight)"
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
@@ -163,6 +198,143 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.titleLabel.text = ".leading"
                 cell.titleLabel.textColor = UIColor.black
                 cell.detailLabel.text = "\(font.leading)"
+                cell.selectionStyle = .none
+                cell.accessoryType = .none
+                return cell
+            default:
+                break
+            }
+        } else if indexPath.section == 2 {
+            switch indexPath.row {
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: TitleValueStepperCell.identifier, for: indexPath) as! TitleValueStepperCell
+                cell.titleLabel.text = ".lineSpacing"
+                cell.titleLabel.textColor = UIColor.black
+                if let value = Properties.shared.lineSpacing {
+                    cell.isEnabled = true
+                    cell.value = value
+                } else {
+                    cell.isEnabled = false
+                    cell.value = NSParagraphStyle.default.lineSpacing
+                }
+                cell.enableSwitch.isHidden = false
+                cell.valueStepper.stepValue = 1
+                cell.valueChangedHandler = { [weak self] (cell, _) in
+                    Properties.shared.lineSpacing = cell.isEnabled ? cell.value : nil
+                    self?.update()
+                }
+                cell.selectionStyle = .none
+                cell.accessoryType = .none
+                return cell
+            case 1:
+                let cell = tableView.dequeueReusableCell(withIdentifier: TitleValueStepperCell.identifier, for: indexPath) as! TitleValueStepperCell
+                cell.titleLabel.text = ".lineHeightMultiple"
+                switch textLabel.suitableLineHeight {
+                case .multiple(_):
+                    cell.titleLabel.textColor = GuideLabel.colorLineHeight
+                default:
+                    cell.titleLabel.textColor = UIColor.black
+                }
+                if let value = Properties.shared.lineHeightMultiple {
+                    cell.isEnabled = true
+                    cell.value = value
+                } else {
+                    cell.isEnabled = false
+                    cell.value = NSParagraphStyle.default.lineHeightMultiple
+                }
+                cell.enableSwitch.isHidden = false
+                cell.valueStepper.stepValue = 0.1
+                cell.valueChangedHandler = { [weak self] (cell, state) in
+                    switch state {
+                    case .isEnabled:
+                        if cell.isEnabled {
+                            Properties.shared.lineHeightMultiple = 1
+                            Properties.shared.maximumLineHeight = nil
+                            Properties.shared.minimumLineHeight = nil
+                        } else {
+                            Properties.shared.lineHeightMultiple = nil
+                        }
+                    case .value:
+                        if cell.isEnabled {
+                            Properties.shared.lineHeightMultiple = cell.value
+                        }
+                    }
+                    self?.update()
+                }
+                cell.selectionStyle = .none
+                cell.accessoryType = .none
+                return cell
+            case 2:
+                let cell = tableView.dequeueReusableCell(withIdentifier: TitleValueStepperCell.identifier, for: indexPath) as! TitleValueStepperCell
+                cell.titleLabel.text = ".maximumLineHeight"
+                switch textLabel.suitableLineHeight {
+                case .maximum(_):
+                    cell.titleLabel.textColor = GuideLabel.colorLineHeight
+                default:
+                    cell.titleLabel.textColor = UIColor.black
+                }
+                if let value = Properties.shared.maximumLineHeight {
+                    cell.isEnabled = true
+                    cell.value = value
+                } else {
+                    cell.isEnabled = false
+                    cell.value = NSParagraphStyle.default.maximumLineHeight
+                }
+                cell.enableSwitch.isHidden = false
+                cell.valueStepper.stepValue = 1
+                cell.valueChangedHandler = { [weak self] (cell, state) in
+                    switch state {
+                    case .isEnabled:
+                        if cell.isEnabled {
+                            Properties.shared.maximumLineHeight = font.lineHeight
+                            Properties.shared.lineHeightMultiple = nil
+                        } else {
+                            Properties.shared.maximumLineHeight = nil
+                        }
+                    case .value:
+                        if cell.isEnabled {
+                            Properties.shared.maximumLineHeight = cell.value
+                        }
+                    }
+                    self?.update()
+                }
+                cell.selectionStyle = .none
+                cell.accessoryType = .none
+                return cell
+            case 3:
+                let cell = tableView.dequeueReusableCell(withIdentifier: TitleValueStepperCell.identifier, for: indexPath) as! TitleValueStepperCell
+                cell.titleLabel.text = ".minimumLineHeight"
+                switch textLabel.suitableLineHeight {
+                case .minimum(_):
+                    cell.titleLabel.textColor = GuideLabel.colorLineHeight
+                default:
+                    cell.titleLabel.textColor = UIColor.black
+                }
+                if let value = Properties.shared.minimumLineHeight {
+                    cell.isEnabled = true
+                    cell.value = value
+                } else {
+                    cell.isEnabled = false
+                    cell.value = NSParagraphStyle.default.minimumLineHeight
+                }
+                cell.enableSwitch.isHidden = false
+                cell.valueStepper.stepValue = 1
+                cell.valueChangedHandler = { [weak self] (cell, state) in
+                    switch state {
+                    case .isEnabled:
+                        if cell.isEnabled {
+                            Properties.shared.minimumLineHeight = font.lineHeight
+                            Properties.shared.lineHeightMultiple = nil
+                        } else {
+                            Properties.shared.minimumLineHeight = nil
+                        }
+                    case .value:
+                        if cell.isEnabled {
+                            Properties.shared.minimumLineHeight = cell.value
+                        }
+                    }
+                    self?.update()
+                }
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
                 return cell

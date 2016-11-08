@@ -67,7 +67,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaQ-na-yP6">
-                                                    <rect key="frame" x="8" y="12.5" width="100" height="18"/>
+                                                    <rect key="frame" x="8" y="13" width="100" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="100" id="KAD-EJ-z1Q"/>
                                                     </constraints>
@@ -103,7 +103,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XbA-hr-JlP">
-                                                    <rect key="frame" x="8" y="12.5" width="100" height="18"/>
+                                                    <rect key="frame" x="8" y="13" width="100" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="100" id="SjY-wl-Inm"/>
                                                     </constraints>
@@ -112,29 +112,38 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wys-8U-dWW">
-                                                    <rect key="frame" x="116" y="12" width="141" height="18"/>
+                                                    <rect key="frame" x="116" y="12" width="92" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Okr-0M-SgT">
-                                                    <rect key="frame" x="265" y="7.5" width="94" height="29"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CbS-C6-qzv">
+                                                    <rect key="frame" x="318" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="switchValueChangedWithSender:" destination="zTb-zd-8ba" eventType="valueChanged" id="zO3-dV-Nv3"/>
+                                                    </connections>
+                                                </switch>
+                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Okr-0M-SgT">
+                                                    <rect key="frame" x="216" y="7" width="94" height="29"/>
                                                     <connections>
                                                         <action selector="stepperValueChangedWithSender:" destination="zTb-zd-8ba" eventType="valueChanged" id="VJM-Tw-sYf"/>
                                                     </connections>
                                                 </stepper>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="wys-8U-dWW" firstAttribute="leading" secondItem="XbA-hr-JlP" secondAttribute="trailing" constant="8" id="ENy-zN-NKu"/>
                                                 <constraint firstItem="XbA-hr-JlP" firstAttribute="centerY" secondItem="Yze-Xd-08D" secondAttribute="centerY" id="EdI-5n-Qsj"/>
+                                                <constraint firstItem="CbS-C6-qzv" firstAttribute="centerY" secondItem="Yze-Xd-08D" secondAttribute="centerY" id="Hyw-7c-XMF"/>
                                                 <constraint firstItem="wys-8U-dWW" firstAttribute="centerY" secondItem="Yze-Xd-08D" secondAttribute="centerY" id="Swg-mw-v2C"/>
-                                                <constraint firstItem="wys-8U-dWW" firstAttribute="leading" secondItem="XbA-hr-JlP" secondAttribute="trailing" constant="8" id="ZT7-tq-1Nj"/>
-                                                <constraint firstAttribute="trailing" secondItem="Okr-0M-SgT" secondAttribute="trailing" constant="16" id="g0f-ax-goh"/>
+                                                <constraint firstItem="CbS-C6-qzv" firstAttribute="leading" secondItem="Okr-0M-SgT" secondAttribute="trailing" constant="8" id="TA1-WV-1ue"/>
+                                                <constraint firstItem="Okr-0M-SgT" firstAttribute="leading" secondItem="wys-8U-dWW" secondAttribute="trailing" constant="8" id="gxK-0C-AMp"/>
                                                 <constraint firstItem="XbA-hr-JlP" firstAttribute="leading" secondItem="Yze-Xd-08D" secondAttribute="leadingMargin" id="kpo-5b-QTl"/>
                                                 <constraint firstItem="Okr-0M-SgT" firstAttribute="centerY" secondItem="Yze-Xd-08D" secondAttribute="centerY" id="n3Q-gk-Ydo"/>
-                                                <constraint firstItem="Okr-0M-SgT" firstAttribute="leading" secondItem="wys-8U-dWW" secondAttribute="trailing" constant="8" id="qjp-nq-CHi"/>
+                                                <constraint firstAttribute="trailing" secondItem="CbS-C6-qzv" secondAttribute="trailing" constant="8" id="oDY-bZ-JJK"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="enableSwitch" destination="CbS-C6-qzv" id="Ugm-Pe-Otq"/>
                                             <outlet property="titleLabel" destination="XbA-hr-JlP" id="y3N-xl-nae"/>
                                             <outlet property="valueLabel" destination="wys-8U-dWW" id="Q3G-DR-OGH"/>
                                             <outlet property="valueStepper" destination="Okr-0M-SgT" id="4EX-a0-Cjm"/>

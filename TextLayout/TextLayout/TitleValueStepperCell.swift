@@ -14,6 +14,7 @@ class TitleValueStepperCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var enableSwitch: UISwitch!
     @IBOutlet weak var valueStepper: UIStepper!
     
     var value: CGFloat {
@@ -26,11 +27,36 @@ class TitleValueStepperCell: UITableViewCell {
         }
     }
     
-    var valueChangedHandler: ((CGFloat) -> Void)?
-    
-    @IBAction func stepperValueChanged(sender: UIStepper) {
-        valueChangedHandler?(value)
-        valueLabel.text = "\(value)"
+    var isEnabled: Bool {
+        set {
+            enableSwitch.isOn = newValue
+            updateState()
+        }
+        get {
+            return enableSwitch.isOn
+        }
     }
     
+    enum ChangedState {
+        case isEnabled
+        case value
+    }
+    
+    var valueChangedHandler: ((TitleValueStepperCell, ChangedState) -> Void)?
+    
+    @IBAction func switchValueChanged(sender: UISwitch) {
+        updateState()
+        valueChangedHandler?(self, .isEnabled)
+    }
+    
+    @IBAction func stepperValueChanged(sender: UIStepper) {
+        valueLabel.text = "\(value)"
+        valueChangedHandler?(self, .value)
+    }
+    
+    private func updateState() {
+        valueStepper.isHidden = !enableSwitch.isOn
+        valueLabel.isHidden = !enableSwitch.isOn
+    }
+
 }
