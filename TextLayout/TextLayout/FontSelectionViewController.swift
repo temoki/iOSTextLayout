@@ -30,6 +30,7 @@ class FontSelectionViewController: UITableViewController {
                 otherFontNames.append(name)
             }
         }
+        otherFontNames.sort()
     }
     
     
