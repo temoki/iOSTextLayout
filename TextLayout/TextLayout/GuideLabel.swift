@@ -75,10 +75,10 @@ class GuideLabel: UILabel {
         let lineHeight = suitableLineHeight.value
         let lineSpace = Properties.shared.lineSpacing ?? 0
         let baseLine = lineHeight + font.descender
-        let ascenderTop = baseLine - font.ascender
+        let ascenderTop = baseLine - min(font.ascender, lineHeight + font.descender)
         let descenderBottom = lineHeight
-        let capHeightTop = baseLine - font.capHeight
-        let xHeightTop = baseLine - font.xHeight
+        let capHeightTop = max(baseLine - font.capHeight, ascenderTop)
+        let xHeightTop = max(baseLine - font.xHeight, ascenderTop)
         
         let hlineWidth: CGFloat = 0.5
         let vlineWidth: CGFloat = 3
