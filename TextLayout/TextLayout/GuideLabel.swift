@@ -15,6 +15,7 @@ class GuideLabel: UILabel {
     static let colorDescender = UIColor.blue
     static let colorCapHeight = UIColor.orange
     static let colorXHeight = UIColor.purple
+    static let colorBounds = UIColor.brown
     
     enum SuitableLineHeight {
         case normal(CGFloat)
@@ -195,8 +196,15 @@ class GuideLabel: UILabel {
                 context.strokePath()
                 context.restoreGState()
             }
-
-            
+        }
+        
+        // Bounds
+        do {
+            context.saveGState()
+            GuideLabel.colorBounds.setStroke()
+            context.setLineWidth(2)
+            context.stroke(self.bounds)
+            context.restoreGState()
         }
         
     }

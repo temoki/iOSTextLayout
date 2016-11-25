@@ -113,9 +113,9 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: TitleDetailCell.identifier, for: indexPath) as! TitleDetailCell
-                cell.titleLabel.text = ".bounds.height"
-                cell.titleLabel.textColor = UIColor.black
-                cell.detailLabel.text = "\(textLabel.bounds.height)"
+                cell.titleLabel.text = ".bounds.size"
+                cell.titleLabel.textColor = GuideLabel.colorBounds
+                cell.detailLabel.text = "w: \(textLabel.bounds.width), h: \(textLabel.bounds.height)"
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
                 return cell
