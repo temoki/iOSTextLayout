@@ -37,30 +37,34 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK:- Private
     
     private func update() {
-        //textLabel.text = Properties.shared.text
-        //textLabel.font = UIFont(name: Properties.shared.fontName, size: Properties.shared.pointSize)
-        
         let p = Properties.shared
-        
-        var attributes: [String: Any] = [:]
-        
-        let text = NSMutableAttributedString(string: p.text)
-        let range = NSRange(location: 0, length: text.length)
-
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
-        paragraph.lineHeightMultiple = p.lineHeightMultiple ?? NSParagraphStyle.default.lineHeightMultiple
-        paragraph.lineSpacing = p.lineSpacing ?? NSParagraphStyle.default.lineSpacing
-        paragraph.maximumLineHeight = p.maximumLineHeight ?? NSParagraphStyle.default.maximumLineHeight
-        paragraph.minimumLineHeight = p.minimumLineHeight ?? NSParagraphStyle.default.minimumLineHeight
-        attributes[NSParagraphStyleAttributeName] = paragraph
-        
-        if let font = UIFont(name: p.fontName, size: p.pointSize) {
-            attributes[NSFontAttributeName] = font
+        if p.lineSpacing != nil || p.lineHeightMultiple != nil || p.maximumLineHeight != nil || p.minimumLineHeight != nil {
+            // NSParagraphStyle の設定が１つでも有効の場合は .attributedText を設定
+            var attributes: [String: Any] = [:]
+            
+            let text = NSMutableAttributedString(string: p.text)
+            let range = NSRange(location: 0, length: text.length)
+            
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .center
+            paragraph.lineHeightMultiple = p.lineHeightMultiple ?? NSParagraphStyle.default.lineHeightMultiple
+            paragraph.lineSpacing = p.lineSpacing ?? NSParagraphStyle.default.lineSpacing
+            paragraph.maximumLineHeight = p.maximumLineHeight ?? NSParagraphStyle.default.maximumLineHeight
+            paragraph.minimumLineHeight = p.minimumLineHeight ?? NSParagraphStyle.default.minimumLineHeight
+            attributes[NSParagraphStyleAttributeName] = paragraph
+            
+            if let font = UIFont(name: p.fontName, size: p.pointSize) {
+                attributes[NSFontAttributeName] = font
+            }
+            
+            text.addAttributes(attributes, range: range)
+            textLabel.attributedText = text
+            
+        } else {
+            // NSParagraphStyle の設定が全て無効の場合は通常の .text/.font を設定
+            textLabel.text = Properties.shared.text
+            textLabel.font = UIFont(name: Properties.shared.fontName, size: Properties.shared.pointSize)
         }
-
-        text.addAttributes(attributes, range: range)
-        textLabel.attributedText = text
         
         tableView.reloadData()
     }
