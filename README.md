@@ -4,7 +4,7 @@ iOS Text Layout Learning Project
 ## Requirements
 
 * Swift 3 (Xcode 8)
-* iOS 10.0 or latar
+* iOS 9.0 or latar
 
 ## Screen Shot
 
