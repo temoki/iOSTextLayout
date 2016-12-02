@@ -53,9 +53,7 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
             paragraph.minimumLineHeight = p.minimumLineHeight ?? NSParagraphStyle.default.minimumLineHeight
             attributes[NSParagraphStyleAttributeName] = paragraph
             
-            if let font = UIFont(name: p.fontName, size: p.pointSize) {
-                attributes[NSFontAttributeName] = font
-            }
+            attributes[NSFontAttributeName] = p.fontType.font(ofSize: p.pointSize)
             
             text.addAttributes(attributes, range: range)
             textLabel.attributedText = text
@@ -63,7 +61,7 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
         } else {
             // NSParagraphStyle の設定が全て無効の場合は通常の .text/.font を設定
             textLabel.text = Properties.shared.text
-            textLabel.font = UIFont(name: Properties.shared.fontName, size: Properties.shared.pointSize)
+            textLabel.font = p.fontType.font(ofSize: p.pointSize)
         }
         
         tableView.reloadData()
@@ -133,7 +131,7 @@ class TextLayoutViewController: UIViewController, UITableViewDelegate, UITableVi
                 let cell = tableView.dequeueReusableCell(withIdentifier: TitleDetailCell.identifier, for: indexPath) as! TitleDetailCell
                 cell.titleLabel.text = ".fontName"
                 cell.titleLabel.textColor = UIColor.black
-                cell.detailLabel.text = font.fontName
+                cell.detailLabel.text = Properties.shared.fontType.detailDescription(ofSize: Properties.shared.pointSize)
                 cell.selectionStyle = .default
                 cell.accessoryType = .disclosureIndicator
                 return cell
